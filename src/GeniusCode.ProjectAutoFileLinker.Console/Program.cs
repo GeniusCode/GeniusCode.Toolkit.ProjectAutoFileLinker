@@ -53,7 +53,7 @@ namespace GeniusCode.Toolkit.ProjectAutoFileLinker
                 var myParams = EstablishLinkParams.BuildParamsForMatchingFiles(compileAction, pathToFiles.Value,
                                                                            searchPattern.Value).ToList();
 
-                Console.WriteLine("{0} files found to link");
+                Console.WriteLine("{0} files found to link", myParams.Count);
                 myParams.ForEach(modifier.EstablishLinkToFile);
                 Console.WriteLine("Saving project file");
                 modifier.Project.Save(pathToProjectFile.Value);
