@@ -1,0 +1,21 @@
+# Standard VS.NET and ReSharper Foo
+*obj
+*bin
+*Bin
+_ReSharper*
+*resharper*
+*.suo
+*.cache
+Thumbs.db
+*TestResults
+*packages
+*.vs10x
+
+#leftovers from merge
+*.orig
+*.bak
+*.user
+
+#what NOT to commit
+/Datasources
+ProjectsUsingNuget.log.txt
