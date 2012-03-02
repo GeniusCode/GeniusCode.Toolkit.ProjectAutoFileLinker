@@ -51,7 +51,7 @@ namespace GeniusCode.Toolkit.ProjectAutoFileLinker
 
                 Console.WriteLine("Searching for files");
                 var myParams = EstablishLinkParams.BuildParamsForMatchingFiles(compileAction, pathToFiles.Value,
-                                                                           searchPattern.Value).ToList();
+                                                                           searchPattern.Value,structureInVS.Value).ToList();
 
                 Console.WriteLine("{0} files found to link", myParams.Count);
                 myParams.ForEach(modifier.EstablishLinkToFile);
