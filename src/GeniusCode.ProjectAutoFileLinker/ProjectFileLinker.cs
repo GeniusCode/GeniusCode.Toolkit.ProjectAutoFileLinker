@@ -9,6 +9,9 @@ namespace GeniusCode.Toolkit.ProjectAutoFileLinker
     {
         public void LinkToFile(Project project, BuildAction buildAction, string includeValue, string projectTargetPath)
         {
+            if(projectTargetPath.StartsWith("\\"))
+                throw new Exception("project target path cannot begin with a backslash");
+
             var matchingProjectItemByTargetPath = (from t in project.Items
                                                    where
                                                        t.HasMetadata("Link") &&

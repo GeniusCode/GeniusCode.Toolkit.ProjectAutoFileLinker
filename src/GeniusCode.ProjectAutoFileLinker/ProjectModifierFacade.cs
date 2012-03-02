@@ -26,7 +26,7 @@ namespace GeniusCode.Toolkit.ProjectAutoFileLinker
 
         public void EstablishLinkToFile(EstablishLinkParams linkParams)
         {
-            var includeValue = _fileMapper.ConvertPathToRelative(_project.DirectoryPath, linkParams.FilenameToLink);
+            var includeValue = _fileMapper.ConvertPathToRelative(_project.FullPath, linkParams.FilenameToLink);
             _linker.LinkToFile(_project,linkParams.BuildAction,includeValue,linkParams.ProjectTargetPath);
         }
 

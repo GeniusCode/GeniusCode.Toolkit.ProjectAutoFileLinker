@@ -1,6 +1,10 @@
-﻿using System.Linq;
+﻿using System;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using FluentAssertions;
 using Microsoft.Build.Evaluation;
+using Microsoft.Build.Framework;
 using NUnit.Framework;
 
 namespace GeniusCode.Toolkit.ProjectAutoFileLinker.Tests
@@ -11,15 +15,23 @@ namespace GeniusCode.Toolkit.ProjectAutoFileLinker.Tests
         [Test]
         public void Should_add_files_to_project_as_embedded_resource()
         {
+          
             const string pathToFiles = @"C:\Temp";
-            const string searchPattern = "*.xml";
-            IProjectModifierFacade modifier =  new ProjectModifierFacade(new Project());
-            var args = EstablishLinkParams.BuildParamsForMatchingFiles(BuildAction.EmbeddedResource, pathToFiles, searchPattern).ToList();
+            IProjectModifierFacade modifier =  new ProjectModifierFacade(new Project());          
 
-            args.ToList().ForEach(modifier.EstablishLinkToFile);
+            var pathToProjectDirectory = Path.Combine(pathToFiles, Guid.NewGuid().ToString());
+            Directory.CreateDirectory(pathToProjectDirectory);
+            var pathToProjectFile = pathToProjectDirectory + "\\testproject.csproj";
+            modifier.Project.Save(pathToProjectFile);
 
-            var items =  modifier.Project.GetItems("EmbeddedResource").Where(i => i.UnevaluatedInclude.EndsWith(".xml")).OrderBy(c=> c.UnevaluatedInclude).ToList();        
-            items.Count.Should().Be(args.Count);      
+            var param = new EstablishLinkParams(BuildAction.EmbeddedResource, @"C:\Temp\SampleResponse.xml", @"Docs\SampleResponse.xml");
+
+            modifier.EstablishLinkToFile(param);
+
+            var item = modifier.Project.GetItems("EmbeddedResource").Single(i => i.UnevaluatedInclude.EndsWith(".xml"));
+
+            item.UnevaluatedInclude.Should().Be("../SampleResponse.xml");
+            item.GetMetadataValue("Link").Should().Be("Docs\\SampleResponse.xml");
         }
     }
 }

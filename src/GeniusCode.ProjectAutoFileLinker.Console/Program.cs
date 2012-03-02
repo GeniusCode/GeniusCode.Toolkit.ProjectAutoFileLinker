@@ -13,10 +13,10 @@ namespace GeniusCode.Toolkit.ProjectAutoFileLinker
 
             var optionSet = new RequiredValuesOptionSet();
             var pathToProjectFile = optionSet.AddRequiredVariable<string>("p", "Path to project file");
-            var pathToFiles = optionSet.AddRequiredVariable<string>("i", "path for including");
+            var pathToFiles = optionSet.AddRequiredVariable<string>("i", "path for files, must end in trailing slash");
             var searchPattern = optionSet.AddRequiredVariable<string>("sp", "search pattern to use");
             var buildType = optionSet.AddVariable<string>("bt", "buildtype to use.  Values are EmbeddedResource, Content, Compile, and None");
-            var structureInVS = optionSet.AddRequiredVariable<string>("s", "structure inside of VS");
+            var structureInVS = optionSet.AddVariable<string>("s", "structure inside of VS.  Must end with a backslash. eg: REPORTS\\");
 
 
             var helper = new ConsoleManager(optionSet, "Include Files As Links");

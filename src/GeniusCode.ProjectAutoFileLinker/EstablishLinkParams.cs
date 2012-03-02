@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -32,10 +33,23 @@ namespace GeniusCode.Toolkit.ProjectAutoFileLinker
             get { return _projectTargetPath; }
         }
 
-        public static IEnumerable<EstablishLinkParams> BuildParamsForMatchingFiles(BuildAction buildAction, string pathToFiles, string searchPattern)
+        public static IEnumerable<EstablishLinkParams> BuildParamsForMatchingFiles(BuildAction buildAction, string pathToFiles, string searchPattern,string rootProjectTarget = "")
         {
+            if (!pathToFiles.EndsWith("\\"))
+                throw new Exception("Path to files must end in a trailing backslash");
+
+            if (!String.IsNullOrWhiteSpace(rootProjectTarget))
+            {
+                if (rootProjectTarget.StartsWith("\\"))
+                    throw new Exception("Root target paths must not start with a backslash");
+
+                if (!rootProjectTarget.EndsWith("\\"))
+                    throw new Exception("Root target paths must end start with a backslash");
+            }
+
             return from f in Directory.GetFiles(pathToFiles, searchPattern, SearchOption.AllDirectories)
-                   select new EstablishLinkParams(buildAction, f, f.Replace(pathToFiles, ""));
+                   let newPath = rootProjectTarget + f.Replace(pathToFiles, "")
+                   select new EstablishLinkParams(buildAction, f, newPath);
         }
     }
 }
