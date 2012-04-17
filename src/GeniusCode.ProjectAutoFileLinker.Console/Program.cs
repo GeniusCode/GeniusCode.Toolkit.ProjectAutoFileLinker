@@ -16,8 +16,8 @@ namespace GeniusCode.Toolkit.ProjectAutoFileLinker
             var pathToFiles = optionSet.AddRequiredVariable<string>("i", "path for files, must end in trailing slash");
             var searchPattern = optionSet.AddRequiredVariable<string>("sp", "search pattern to use");
             var buildType = optionSet.AddVariable<string>("bt", "buildtype to use.  Values are EmbeddedResource, Content, Compile, and None");
-            var structureInVS = optionSet.AddVariable<string>("s", "structure inside of VS.  Must end with a backslash. eg: REPORTS\\");
-
+            //var structureInVS = optionSet.AddVariable<string>("s", "structure inside of VS.  Must end with a backslash. eg: REPORTS\\");
+            string structureInVS = "";
 
             var helper = new ConsoleManager(optionSet, "Include Files As Links");
 
@@ -43,15 +43,14 @@ namespace GeniusCode.Toolkit.ProjectAutoFileLinker
                         break;
                     case "COMPILE":
                         compileAction = BuildAction.Compile;
-                            break;
+                        break;
                     default:
                         throw new NotImplementedException(String.Format("{0} is not supported.", buildType.Value));
                 }
 
 
                 Console.WriteLine("Searching for files");
-                var myParams = EstablishLinkParams.BuildParamsForMatchingFiles(compileAction, pathToFiles.Value,
-                                                                           searchPattern.Value,structureInVS.Value).ToList();
+                var myParams = EstablishLinkParams.BuildParamsForMatchingFiles(compileAction, pathToFiles.Value, searchPattern.Value, structureInVS).ToList();
 
                 Console.WriteLine("{0} files found to link", myParams.Count);
                 myParams.ForEach(modifier.EstablishLinkToFile);
